@@ -1,6 +1,6 @@
 import express from "express";
 import { welcome } from "../controller/welcome_controller.js";
-import { registerUser,loginUser,userDetail,resetPassword,verifyToken } from "../controller/user_controller.js";
+import { registerUser,loginUser,userDetail,resetPassword,verifyToken,sendWelcomeMessage } from "../controller/user_controller.js";
 import {newTransaction ,todayTransactionDetail,filterTransaction } from "../controller/transaction_controller.js";
 import { body } from "express-validator";
 import {decode_user} from '../middleware/decode_user.js';
@@ -33,6 +33,9 @@ route.post('/verifytoken',[
     body('password','Please enter a valid password with atleast 6 digits').isLength({min:6})
 
 ], verifyToken);
+
+
+route.get('/sendwelcomemessage',sendWelcomeMessage);
 // end of user routes
 
 // routes for transaction
