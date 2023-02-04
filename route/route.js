@@ -1,7 +1,7 @@
 import express from "express";
 import { welcome } from "../controller/welcome_controller.js";
 import { registerUser,loginUser,userDetail,resetPassword,verifyToken,sendWelcomeMessage } from "../controller/user_controller.js";
-import {newTransaction ,todayTransactionDetail,filterTransaction } from "../controller/transaction_controller.js";
+import {newTransaction ,todayTransactionDetail,filterTransaction, deleteTransaction} from "../controller/transaction_controller.js";
 import { body } from "express-validator";
 import {decode_user} from '../middleware/decode_user.js';
 
@@ -41,9 +41,15 @@ route.get('/sendwelcomemessage',sendWelcomeMessage);
 // routes for transaction
 route.get('/transaction/todaytransaction',decode_user, todayTransactionDetail);
 route.get('/transaction/filtertransaction',decode_user, filterTransaction);
+
 route.post('/transaction/newtransaction',[
     body('amount','Please enter a amount >0 ').isLength({min:1}),
     body('type','Please enter a valid type').isLength({min: 3}),
 ],decode_user, newTransaction);
+
+route.delete('/transaction/delete',[
+    body('transaction_id','Important data is missing !').isLength({min:1}),
+],decode_user, deleteTransaction);
+
 
 export {route};

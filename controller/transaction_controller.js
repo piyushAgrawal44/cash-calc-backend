@@ -15,7 +15,7 @@ export const newTransaction = async (req, res) => {
     let day = date.getDate();
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
-    let currentDate = `${year}-${month<10?"0"+month:month}-${day<10?"0"+day:day}`;
+    let currentDate = `${year}-${month < 10 ? "0" + month : month}-${day < 10 ? "0" + day : day}`;
 
     try {
         // creating the new user in mongo db
@@ -44,7 +44,7 @@ export const todayTransactionDetail = async (req, res) => {
     let day = date.getDate();
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
-    let currentDate = `${year}-${month<10?"0"+month:month}-${day<10?"0"+day:day}`;
+    let currentDate = `${year}-${month < 10 ? "0" + month : month}-${day < 10 ? "0" + day : day}`;
 
 
     try {
@@ -62,28 +62,44 @@ export const filterTransaction = (async (req, res) => {
     let end_date = req.query.end_date;
 
     let filter = {};
-    filter.user_id=req.user.id;
+    filter.user_id = req.user.id;
     if (start_date) {
-        filter.created_at = {$gte: start_date};
+        filter.created_at = { $gte: start_date };
     }
     if (filter.created_at) {
         if (end_date) {
-            filter.created_at = {...filter.created_at,$lte: end_date};
-        } 
+            filter.created_at = { ...filter.created_at, $lte: end_date };
+        }
     }
-    else{
+    else {
         if (end_date) {
-            filter.created_at = {$lte: end_date};
+            filter.created_at = { $lte: end_date };
         }
     }
 
     try {
 
         const transactions = await Transactions.find(filter);
-        res.status(201).json({success:true, data:transactions});
+        res.status(201).json({ success: true, data: transactions });
 
     } catch (error) {
-        res.status(501).json({ success:false,message:"Internal Server Error !",long_message: error.message })
+        res.status(501).json({ success: false, message: "Internal Server Error !", long_message: error.message })
 
+    }
+});
+
+export const deleteTransaction = (async (req, res) => {
+    try {
+        req.body.transaction_id.forEach(element => {
+            Transactions.deleteOne({ "_id": element, user_id: req.user.id }).then(transactions => {
+                // nothing
+            }).catch(error => {
+                return res.status(401).json({ success: false, message: "Access Denied", long_message: error.message });
+            });
+        });
+        return res.status(201).json({ success: true, message: "Successfully row deleted !" });
+
+    } catch (error) {
+        return res.status(501).json({ success: false, message: "Inernal Server Error", long_message: error.message })
     }
 });

@@ -14,6 +14,7 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true }).then(
     app.use(bodyParser.json({ extended: true }));
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(cors());
+    // app.use(cors({origin:["http://localhost:3000","https://piyushAgrawal44.github.com/cash-calc/"]}));
 
     app.use('/', route);
 
