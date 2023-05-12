@@ -10,8 +10,8 @@ import WelcomeMessage from '../modal/welcome_message_schema.js';
 // Do not change this details before thinking... 
 const privateKey = "piyu@sh@#@^&^1310";
 const passwordCoriander = "#p1p@";
-const adminEmail = "baniyajunction.official@gmail.com"
-const adminEmaiPass = "vwsfopgxxuvwatiw";
+const adminEmail = "test@gmail.com"
+const adminEmaiPass = "";
 // Do not change above code before thinking... 
 
 
